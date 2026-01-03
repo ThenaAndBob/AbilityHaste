@@ -1,0 +1,1 @@
+{"0": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/TwitchHideInShadows.png", "1": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/TwitchVenomCask.png", "2": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/TwitchExpunge.png", "3": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/TwitchFullAutomatic.png"}

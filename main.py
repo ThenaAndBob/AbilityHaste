@@ -1,9 +1,13 @@
 import requests
 import json
+import os
 
 class getData:
+    SPELLORDER = ["Q", "W", "E", "R"]
+
     def __init__(self,patch,apiType="C",download=True):
         self.__patch = patch
+        self.__version = patch[:-2]
         self.__apiType = apiType
         self.__download = download
         if apiType != "C" and apiType != "D":
@@ -31,26 +35,26 @@ class getData:
 
         return url
 
-    def __request(self,champion="",rType="json"): # Array[String] of champion names.
+    def __request(self,champion="All",rType="json"): # Array[String] of champion names.
         if rType != "json" and rType != "raw":
             raise ValueError("rType must be json or raw")
         
         filepath = ""
         if self.__apiType == "C":
-            filepath = f"C:\Code\AbilityHaste\cdragon\#{champion}"
+            filepath = f"C:\Code\AbilityHaste\cdragon\{champion}"
         else:
-            filepath = f"C:\Code\AbilityHaste\ddragon\#{champion}"
+            filepath = f"C:\Code\AbilityHaste\ddragon\{champion}"
 
         if self.__download:
             url = ""
-            if champion == "":
+            if champion == "All":
                 url = self.__getChampsListUrl()         
             else:
                 url = self.__getChampsCooldownURL(champion)
             
             response = requests.get(url)
             print(url + " : " + str(response) + "\n") # DEBUG
-            data = json.loads(response.content)
+            print(response.content)
             with open(filepath,"wb") as f:
                 f.write(response.content)
         else:
@@ -59,7 +63,10 @@ class getData:
 
 
         if rType == "json":
-            return data
+            if self.__download:
+                return json.loads(response.content)
+            else:
+                return data
         else:
             return response.content
 
@@ -83,7 +90,7 @@ class getData:
         
         return champions
     
-    def getChampsList(self): # TO BE CALLED ONCE PER PATCH.
+    def getChampsList(self): # TO BE CALLED ONCE PER PATCH. Returns list of strings
         if self.__apiType == "C": 
             return self.__getChampsListC()
         else:
@@ -136,10 +143,20 @@ class getData:
     
     def getIdNameMapping(self):
         temp = self.__apiType
-        self.__apiType = "D" # USE API D BECAUSE WE NEEEEEEEEEEEEEEEEED the names in the mapping to agree with the D api.
+        self.__apiType = "C" # USE API D second BECAUSE WE NEEEEEEEEEEEEEEEEED the names in the mapping to agree with the D api.
 
         if self.__download:
             myMap = {}
+            
+            champions = self.getChampsList()
+            for champ in champions:
+                data = self.__request(champ)
+
+                myMap[f"{data['alias']}"] = f"{data['id']}"
+                myMap[f"{data['id']}"] = f"{data['alias']}"
+
+
+            self.__apiType = "D"
             champions = self.getChampsList()
 
             for champ in champions:
@@ -149,7 +166,7 @@ class getData:
                 myMap[f"{data['key']}"] = f"{data['id']}"
 
 
-            self.toJSONfile(self,myMap,"C:\Code\AbilityHaste\Map.json")
+            self.toJSONfile(myMap,"C:\Code\AbilityHaste\Map.json")
         else:
             with open("C:\Code\AbilityHaste\Map.json","r") as f:
                 myMap = json.loads(f.read())
@@ -223,6 +240,76 @@ class getData:
     def notesC(self):
         pass
 
+    def __localDownload(self, download):
+        if download == "default":
+            localDownloadCheck = self.__download
+        elif download.lower() == "y":
+            localDownloadCheck = True
+        else:
+            localDownloadCheck = False
+        
+        return localDownloadCheck
+
+    def getIconURLs(self, download="default"):
+        localDownloadCheck = self.__localDownload(download)
+
+        if not localDownloadCheck:
+            raise NotImplementedError
+        else:
+            if self.__apiType == "C":
+                raise NotImplementedError
+                # https://raw.communitydragon.org/{version}/game/assets/characters/{champ.lower()}/hud/icons2d/
+                champids = self.getChampsList()
+                mapping = self.getIdNameMapping()
+                
+                for id in champids:
+                    id = str(id)
+                    with open("cdragon/id", "rb") as f:
+                        champJSON = json.load(f)
+
+
+                    for spell in champJSON["spells"]:
+                        pass
+
+                    with open(f"cAssets/{id}", "w") as f:
+                        toWrite = ""
+                        for asset in data:
+                            toWrite += imgUrlBase + asset["name"] + "\n"
+                        toWrite = toWrite[:-1]
+                        f.write(toWrite)
+            else:
+                imgBase = f"https://ddragon.leagueoflegends.com/cdn/{self.__patch}/img/spell/"
+                champNames = self.getChampsList()
+                
+                for name in champNames:
+                    with open(f"ddragon/{name}", "rb") as f:
+                        champJSON = json.load(f)
+
+                    with open(f"dAssetsLinks/{name}.txt", "w") as f:
+                        toWrite = {}
+                        for index, spell in enumerate(champJSON["data"][name]["spells"]):
+                            toWrite[index] = imgBase + spell["image"]["full"]
+                        f.write(json.dumps(toWrite))
+
+    def getIconPNGs(self,download):
+        localDownloadCheck = self.__localDownload(download)
+
+        if not localDownloadCheck:
+            raise NotImplementedError
+        else:
+            if self.__apiType == "D":
+                champNames = self.getChampsList()
+                for name in champNames:
+                    with open(f"dAssetsLinks/{name}.txt", "rb") as f:
+                        iconUrls = json.load(f)
+
+                    for spellIndex in range(4):
+                        url = iconUrls[str(spellIndex)]
+                        with open(f"dAssets/{name}{self.SPELLORDER[spellIndex]}.png", "wb") as f:
+                            img = requests.get(url)
+                            f.write(img.content)
+            else: 
+                raise NotImplementedError
 
 # END OF CLASS
 
@@ -263,10 +350,10 @@ def classify(): # I dont like this
 
 
 
-
 # READTHIS:
 # the reason i wanted to use cdragon is because it also has recharge times.
 # i couldnt find them in ddragon. skill issue maybe.
 
-print("main.py running -doing nothing")
-
+bob = getData("15.24.1","D",download=False)
+bob.getIconURLs(download="y")
+bob.getIconPNGs(download="y")

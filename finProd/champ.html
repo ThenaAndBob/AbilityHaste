@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=League+Spartan:wght@592&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        @font-face {
+            font-family: myFont; /* set name */
+            src: url(sansation_light.woff); /* url of the font */
+        }
+
+        body {
+            background-image: url("https://wallpapers.com/images/featured/league-of-legends-background-a1iu7ppvueyfvfdw.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: white;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+        }
+
+        .mainContainer{ /* The container for the entire thing */
+            --w: min(40vw,700px);
+
+            position: relative;
+            background-color: transparent;
+            top: 10vh;
+            left: calc((100vw - var(--w)) / 2);
+            height: 70vh;
+            width: var(--w);
+
+            --abilityHasteHeight: 10%
+        }
+
+
+        .abilityHasteContainer{
+            height: var(--abilityHasteHeight);
+            display: flex;
+            flex-direction: row;
+            background-color: black;
+        }
+
+        .container{ /* Container for the spells and their cds. */
+            background-color: transparent;
+            height: calc(100% - var(--abilityHasteHeight));
+
+            box-sizing: border-box;
+            border-style: solid;
+            border-color: black;
+            border-width: 2px 0px 0px 0px;
+        }
+
+        .spell{ /* One row of spells (e.g. Q) */
+            font-size: 35px;
+            height: 25%;
+            display: flex;
+            flex-direction: row;
+
+            box-sizing: border-box;
+            border-style: solid;
+            border-color: white;
+            border-width: 0px 2px 2px 2px;
+        }
+
+        .abilityimage{
+            background-image: url("https://raw.communitydragon.org/15.24/game/assets/characters/ahri/hud/icons2d/icons_ahri_w.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            height: 100%;
+            width: 30%;
+            text-align: right;
+        }
+
+        .abilityKey{
+            bottom: 5%;
+            right: 5%;
+            position: absolute;
+            color: white;
+            background-color: rgba(0,0,0,0.9);
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 5px;
+            border-radius: 5px;
+        }
+
+        .abilitycdsbox{ /* The box that has CD timers. */
+            background-color: black;
+            height: 100%;
+            width: 70%;
+            display: grid;
+            place-items: center;
+        }
+
+        .cdTEXT{
+            text-align: center;
+        }
+
+        .recharge{
+            display: inline-block;
+        }
+
+        .smalltext{
+            font-size: 15px;
+        }
+
+        .abilityHasteCounter{
+            height: 100%;
+            width: 60%;
+            text-align: center;
+
+            font: inherit;
+            font-size: min(5vw,5vh);
+
+            box-sizing: border-box;
+            border: 0px;
+            border-color: black;
+            border-style: solid;
+            border-width: 2px 0px 0px 2px;
+        }
+
+        .cdrBOX{ /* Box showing cdr% */
+            width: 10%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            background-color: white;
+            color: black;
+            box-sizing: border-box;
+            border-right: 2px solid black;
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+        }
+
+        .incrementerContainer{
+            width: 15%;
+            height: 100%;
+            background-color: wheat;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .incrementer{
+            height: 50%;
+            border: 0px;
+
+            background-color: white;
+            border-right: 2px solid black;
+            border-top: 2px solid black;
+
+            font-size: min(1vw,1vh);
+            font: inherit;
+        }
+
+        .incrementer:hover{
+            background-color: green;
+            box-sizing: border-box;
+        }
+
+
+        .searchbar{
+            width: 100%;
+            height: 10%;
+            font-size: min(3vw,3vh);
+            text-align: center;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+            font: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="mainContainer">
+        
+        <div class="abilityHasteContainer">
+            <input type="search" placeholder="Ability Haste" id="amountAH" class="abilityHasteCounter">
+
+            <div class="cdrBOX" id="cdrBOX">0%</div>
+
+            <div class="incrementerContainer">
+                <button type="button" class="incrementer" id="+1">+1</button>
+                <button type="button" class="incrementer" id="-1">-1</button>
+            </div>
+
+            <div class="incrementerContainer">
+                <button type="button" class="incrementer" id="+5">+5</button>
+                <button type="button" class="incrementer" id="-5">-5</button>
+            </div>
+        </div>
+
+        <div class="champSearch">
+            <input type="search" id="searchbar" class="searchbar" placeholder="Champion">
+            <div id = popUpMenu></div>
+        </div>
+
+        <div class="container">
+            <div class="spell">
+                <div class="abilityimage" id="ImgQ"><div class="abilityKey">Q</div></div>
+                <div class="abilitycdsbox"><div id="Q" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage" id="ImgW"><div class="abilityKey">W</div></div>
+                <div class="abilitycdsbox"><div id="W" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage" id="ImgE"><div class="abilityKey">E</div></div>
+                <div class="abilitycdsbox"><div id="E" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage" id="ImgR"><div class="abilityKey">R</div></div>
+                <div class="abilitycdsbox"><div id="R" class="cdTEXT"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="searchBar.js"></script>
+    <script>
+        const spellOrder = ["Q", "W", "E", "R"]
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('bob');
+        console.log(myParam)
+
+        var cds = [[[11.0, 10.0, 9.0, 8.0, 7.0, 7.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[17.0, 17.0, 17.0, 17.0, 17.0, 17.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 4.0, 4.0, 4.0, 4.0, 4.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 3.0, 2.0, 2.0, 2.0, 2.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]]
+
+        fetch("Map.json").then(res => res.json()).then(map => {
+            fetch("cleanedC-CD.json").then(res => res.json()).then(data => {console.log(myParam); console.log(map); console.log(data); cds = data[map[myParam]]; updateHTML(cds)}) 
+        })
+        
+        function updateHTML(newCDS){
+            // update cds
+            for (let i = 0; i < 4; i++){
+                let re = /[|]/
+                let cds = document.getElementById(spellOrder[i])
+                cds.innerHTML = formatHTML(newCDS[i][0], newCDS[i][1], "") // TODO: ADD NOTES
+            }
+
+            // update the cdr box
+            updateCDR()
+        }
+
+        function formatHTML(cds, recharge, notes){
+            let c = JSON.stringify(cds).replaceAll(",", " / ").replaceAll(/\[|\]/g, "")
+            let re = ""
+            let n = ""
+
+            if (!allZeros(recharge)){
+                c = "<span class='recharge'><span class='smalltext'>CD:&nbsp&nbsp</span>" + c + "</span>"
+                re = "<span class='recharge'><span class='smalltext'>RECHARGE:&nbsp&nbsp</span>" + JSON.stringify(recharge).replaceAll(",", " / ").replaceAll(/\[|\]/g, "") + "</span>"
+            }
+            console.log(allZeros(recharge, [0,0,0,0]))
+            if (notes !== ""){
+                n = "<br>" + notes
+            }
+            
+            return c + re + n
+        }
+
+        function allZeros(a){
+            zeros = true
+            a.forEach(element => {
+                zeros &= element === 0
+            });
+            return zeros
+        }
+
+        
+        // ALL the ability haste stuff
+        const amountAH = document.getElementById("amountAH")
+        amountAH.addEventListener("keyup", function(){
+            cdsUpdate()
+        })
+
+        function cdsUpdate(){
+            console.log("updating")
+            updateHTML(applyCDR(cds))
+        }
+
+        function parseOrConvert(text){
+            let AH = parseInt(text)
+            if (isNaN(AH)){AH = 0}
+            return AH
+        }
+
+        function getCDReductionRatio(){ // Always returns int
+            let AH = parseOrConvert(amountAH.value)
+            return 100 / (100 + AH)
+        }
+
+        function applyCDR(cds){ // [[[q],[q]],[[w],[w]],[[e],[e]],[[r],[r]]] each of q,w,e,r are lists
+            let cdr = getCDReductionRatio()
+            let cdsCopy = structuredClone(cds)
+            cdsCopy.forEach(lofl => {
+                lofl.forEach(l => {
+                    l.forEach((cd, index) => {console.log(cdr); l[index] = roundTo(cd*cdr,1)})
+                })
+            })
+            console.log(cdsCopy)
+            return cdsCopy
+        }
+
+        function roundTo(num, decimalPoints){
+            let factor = (10 ** decimalPoints)
+            return Math.round((num + Number.EPSILON) * factor) / factor
+        }
+
+
+        // Ability Haste Buttons
+        const buttonIds = ["+1","-1","+5","-5"]
+        buttonIds.forEach(id => {
+            document.getElementById(id).onclick = function(){
+                console.log(event.target.id)
+                amountAH.value = parseOrConvert(amountAH.value) + parseInt(event.target.id)
+                cdsUpdate()
+            }
+        })
+
+
+        // CDR box
+        const cdrBOX = document.getElementById("cdrBOX")
+        function updateCDR(){
+            parseOrConvert
+            cdr = Math.round(100 * roundTo(1 - getCDReductionRatio(),2)) // cdr = 1 - this INT
+            cdrBOX.innerHTML = cdr
+            cdrBOX.innerHTML += "%"
+        }
+
+
+        // Champ search
+        const popup = document.getElementById("popUpMenu")
+        const searchbar = document.getElementById("searchbar")
+        const champList = ['Aatrox', 'Ahri', 'Akali', 'Akshan', 'Alistar', 'Ambessa', 'Amumu', 'Anivia', 'Annie', 'Aphelios', 'Ashe', 'AurelionSol', 'Aurora', 'Azir', 'Bard', 'Belveth', 'Blitzcrank', 'Brand', 'Braum', 'Briar', 'Caitlyn', 'Camille', 'Cassiopeia', 'Chogath', 'Corki', 'Darius', 'Diana', 'Draven', 'DrMundo', 'Ekko', 'Elise', 'Evelynn', 'Ezreal', 'Fiddlesticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Gwen', 'Hecarim', 'Heimerdinger', 'Hwei', 'Illaoi', 'Irelia', 'Ivern', 'Janna', 'JarvanIV', 'Jax', 'Jayce', 'Jhin', 'Jinx', 'Kaisa', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kayn', 'Kennen', 'Khazix', 'Kindred', 'Kled', 'KogMaw', 'KSante', 'Leblanc', 'LeeSin', 'Leona', 'Lillia', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'MasterYi', 'Mel', 'Milio', 'MissFortune', 'MonkeyKing', 'Mordekaiser', 'Morgana', 'Naafiri', 'Nami', 'Nasus', 'Nautilus', 'Neeko', 'Nidalee', 'Nilah', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Quinn', 'Rakan', 'Rammus', 'RekSai', 'Rell', 'Renata', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Samira', 'Sejuani', 'Senna', 'Seraphine', 'Sett', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Smolder', 'Sona', 'Soraka', 'Swain', 'Sylas', 'Syndra', 'TahmKench', 'Taliyah', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'TwistedFate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', 'Velkoz', 'Vex', 'Vi', 'Viego', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Xayah', 'Xerath', 'XinZhao', 'Yasuo', 'Yone', 'Yorick', 'Yunara', 'Yuumi', 'Zaahen', 'Zac', 'Zed', 'Zeri', 'Ziggs', 'Zilean', 'Zoe', 'Zyra']
+
+        searchbar.addEventListener("keyup", function(event){
+            searchBarUpdate(event,champList,popup,onEnterChamp,"S") // In searchBar.js pass the list of things we can search, and the popup menu
+        })
+
+        function onEnterChamp(champ){
+            window.location.href = "/champ.html?bob=" + champ
+        }
+
+
+        // Icons
+        function updateIcons(){
+            for (let i = 0; i < 4; i++){
+                let champ = myParam
+                document.getElementById(`Img${spellOrder[i]}`).style.backgroundImage = `url("dAssets/${champ}${spellOrder[i]}.png")`
+            }           
+        }
+        updateIcons()
+
+    </script>
+</body>
+
+</html>

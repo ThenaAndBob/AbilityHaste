@@ -15,10 +15,6 @@
             src: url(sansation_light.woff); /* url of the font */
         }
 
-        :root{
-            
-        }
-
         body {
             background-image: url("https://wallpapers.com/images/featured/league-of-legends-background-a1iu7ppvueyfvfdw.jpg");
             background-repeat: no-repeat;
@@ -32,12 +28,14 @@
         }
 
         .mainContainer{ /* The container for the entire thing */
+            --w: min(40vw,700px);
+
             position: relative;
             background-color: transparent;
             top: 10vh;
-            left: 30vw;
+            left: calc((100vw - var(--w)) / 2);
             height: 70vh;
-            width: 40vw;
+            width: var(--w);
 
             --abilityHasteHeight: 10%
         }
@@ -73,7 +71,7 @@
         }
 
         .abilityimage{
-            background-image: url("https://wiki.leagueoflegends.com/en-us/images/Zaahen_The_Darkin_Glaive.png?d12cf");
+            background-image: url("https://raw.communitydragon.org/15.24/game/assets/characters/ahri/hud/icons2d/icons_ahri_w.png");
             background-repeat: no-repeat;
             background-size: cover;
             position: relative;
@@ -202,27 +200,26 @@
             </div>
         </div>
 
-        <div class="itemSearch">
-            <input type="search" id="searchbar" class="searchbar" placeholder="Search">
-            <div id = popUpMenu>asd</div>
-            <div id="currItemList"></div>
+        <div class="champSearch">
+            <input type="search" id="searchbar" class="searchbar" placeholder="Champion">
+            <div id = popUpMenu></div>
         </div>
 
         <div class="container">
             <div class="spell">
-                <div class="abilityimage"><div class="abilityKey">Q</div></div>
+                <div class="abilityimage" id="ImgQ"><div class="abilityKey">Q</div></div>
                 <div class="abilitycdsbox"><div id="Q" class="cdTEXT"></div></div>
             </div>
             <div class="spell">
-                <div class="abilityimage"><div class="abilityKey">W</div></div>
+                <div class="abilityimage" id="ImgW"><div class="abilityKey">W</div></div>
                 <div class="abilitycdsbox"><div id="W" class="cdTEXT"></div></div>
             </div>
             <div class="spell">
-                <div class="abilityimage"><div class="abilityKey">E</div></div>
+                <div class="abilityimage" id="ImgE"><div class="abilityKey">E</div></div>
                 <div class="abilitycdsbox"><div id="E" class="cdTEXT"></div></div>
             </div>
             <div class="spell">
-                <div class="abilityimage"><div class="abilityKey">R</div></div>
+                <div class="abilityimage" id="ImgR"><div class="abilityKey">R</div></div>
                 <div class="abilitycdsbox"><div id="R" class="cdTEXT"></div></div>
             </div>
         </div>
@@ -234,6 +231,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const myParam = urlParams.get('bob');
+        console.log(myParam)
 
         var cds = [[[11.0, 10.0, 9.0, 8.0, 7.0, 7.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[17.0, 17.0, 17.0, 17.0, 17.0, 17.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 4.0, 4.0, 4.0, 4.0, 4.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 3.0, 2.0, 2.0, 2.0, 2.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]]
 
@@ -340,20 +338,28 @@
         }
 
 
-        // Items
-        const itemList = ["Your Cut", "Abyssal Mask", "Aegis of the Legion", "Aether Wisp", "Amplifying Tome", "Anathema's Chains", "Anti-Tower Socks", "Anvil Voucher", "Arcane Sweeper (Trinket)", "Archangel's Staff", "Ardent Censer", "Armored Advance", "Atma's Reckoning", "Axiom Arc", "B. F. Sword", "Bami's Cinder", "Bandleglass Mirror", "Banshee's Veil", "Base Turret Reinforced Armor (Turret Item)", "Berserker's Greaves", "Black Cleaver", "Black Hole Gauntlet", "Black Spear", "Blackfire Torch", "Blade of the Ruined King", "Blasting Wand", "Blighting Jewel", "Bloodletter's Curse", "Bloodsong", "Bloodthirster", "Boots", "Boots of Swiftness", "Bounty of Worlds", "Bramble Vest", "Bravery Voucher", "Cappa Juice", "Catalyst of Aeons", "Caulfield's Warhammer", "Celestial Opposition", "Chain Vest", "Chainlaced Crushers", "Chempunk Chainsword", "Cloak of Agility", "Cloak of Starry Night", "Cloth Armor", "Control Ward", "Cosmic Drive", "Crimson Lucidity", "Crown of the Shattered Queen", "Cruelty", "Cryptbloom", "Crystalline Bracer", "Cull", "Dagger", "Dark Seal", "Darksteel Talons", "Dawncore", "Dead Man's Plate", "Death's Dance", "Death's Daughter", "Decapitator", "Demonic Embrace", "Demon King's Crown", "Detonation Orb", "Doran's Blade", "Doran's Ring", "Doran's Shield", "Diamond-Tipped Spear", "Divine Sunderer", "Dragonheart", "Dream Maker", "Duskblade of Draktharr", "Echoes of Helia", "Eclipse", "Edge of Night", "Eleisa's Miracle", "Elixir of Avarice", "Elixir of Force", "Elixir of Iron", "Elixir of Skill", "Elixir of Sorcery", "Elixir of Wrath", "Empyrean Promise", "Enhanced Lucky Dice", "Essence Reaver", "Everfrost", "Executioner's Calling", "Experimental Hexplate", "Eye of the Herald", "Faerie Charm", "Farsight Alteration", "Fated Ashes", "Fiendish Codex", "Fimbulwinter", "Fire at Will", "Flesheater", "Force of Entropy", "Forbidden Idol", "Force of Nature", "Forever Forward", "Frozen Heart", "Fulmination", "Galeforce", "Gambler's Blade", "Gargoyle Stoneplate", "Ghostcrawlers", "Giant's Belt", "Glacial Buckler", "Glowing Mote", "Gold Stat Anvil Voucher", "Goredrinker", "Guardian Angel", "Guardian's Amulet", "Guardian's Blade", "Guardian's Dirk", "Guardian's Hammer", "Guardian's Horn", "Guardian's Orb", "Guardian's Shroud", "Guinsoo's Rageblade", "Gunmetal Greaves", "Gusto", "Gustwalker Hatchling", "Hamstringer", "Haunting Guise", "Health Potion", "Hearthbound Axe", "Heartsteel", "Hellfire Hatchet", "Hemomancer's Helm", "Hexbolt Companion", "Hexdrinker", "Hextech Alternator", "Hextech Gunblade", "Hextech Rocketbelt", "Hollow Radiance", "Horizon Focus", "Hubris", "Hullbreaker", "Iceborn Gauntlet", "Immortal Shieldbow", "Innervating Locket", "Imperial Mandate", "Infinity Edge", "Ionian Boots of Lucidity", "Jak'Sho, The Protean", "Jarvan I's", "Juice of Haste", "Juice of Power", "Juice of Vitality", "Kaenic Rookern", "Kindlegem", "Kinkou Jitte", "Knight's Vow", "Kraken Slayer", "Lane Swap Detector", "Last Whisper", "Liandry's Torment", "Lifeline", "Lightning Rod", "Legendary Assassin Item", "Legendary Fighter Item", "Legendary Mage Item", "Legendary Marksman Item", "Legendary Support Item", "Legendary Tank Item", "Lich Bane", "Locket of the Iron Solari", "Long Sword", "Lord Dominik's Regards", "Lost Chapter", "Lucky Dice", "Luden's Companion", "Malignance", "Manamune", "Maw of Malmortius", "Mejai's Soulstealer", "Mercurial Scimitar", "Mercury's Treads", "Mikael's Blessing", "Mirage Blade", "Moonflair Spellblade", "Moonstone Renewer", "Morellonomicon", "Mosstomper Seedling", "Mortal Reminder", "Muramana", "Nashor's Tooth", "Navori Flickerblade", "Needlessly Large Rod", "Negatron Cloak", "Night Harvester", "Noonquiver", "Null-Magic Mantle", "Oblivion Orb", "Ohmwrecker (Turret Item)", "Opportunity", "Oracle Lens", "Overcharged", "Overlord's Bloodmail", "Perplexity", "Phage", "Phantom Dancer", "Phreakish Gusto", "Pickaxe", "Plated Steelcaps", "Poro-Snax", "Prismatic Item", "Prismatic Stat Voucher", "Profane Hydra", "Prowler's Claw", "Puppeteer", "Pyromancer's Cloak", "Quicksilver Sash", "Rabadon's Deathcap", "Radiant Virtue", "Raise Morale", "Randuin's Omen", "Rapid Firecannon", "Ravenous Hydra", "Reality Fracture", "Reaper's Toll", "Rectrix", "Recurve Bow", "Redemption", "Refillable Potion", "Regicide", "Reinforced Armor (Turret Item)", "Rejuvenation Bead", "Reverberation", "Riftmaker", "Rite of Ruin", "Rod of Ages", "Ruby Crystal", "Runaan's Hurricane", "Runecarver", "Runic Compass", "Rylai's Crystal Scepter", "Sanguine Gift", "Sapphire Crystal", "Scarecrow Effigy", "Scorchclaw Pup", "Scout's Slingshot", "Scouting Ahead", "Seeker's Armguard", "Seraph's Embrace", "Serpent's Fang", "Serrated Dirk", "Serylda's Grudge", "Shadowflame", "Shattered Armguard", "Sheen", "Shield of Molten Stone", "Shurelya's Battlesong", "Slightly Magical Boots", "Solstice Sleigh", "Sorcerer's Shoes", "Spear of Shojin", "Spectral Cutlass", "Spectre's Cowl", "Spellslinger's Shoes", "Spirit Visage", "Staff of Flowing Water", "Stat Bonus", "Statikk Shiv", "Stealth Ward", "Steel Sigil", "Sterak's Gage", "Stormrazor", "Stormsurge", "Stridebreaker", "Sundered Sky", "Sunfire Aegis", "Super Mech Armor", "Super Mech Power Field", "Swiftmarch", "Sword of Blossoming Dawn", "Sword of the Divine", "Symbiotic Soles", "Synchronized Souls", "Talisman of Ascension", "Tear of the Goddess", "Terminus", "The Brutalizer", "The Collector", "The Golden Spatula", "Thornmail", "Tiamat", "Titanic Hydra", "Total Biscuit of Everlasting Will", "Trailblazer", "Trinity Force", "Tunneler", "Turbo Chemtank", "Turret Plating", "Twilight's Edge", "Twin Mask", "Umbral Glaive", "Unending Despair", "Vampiric Scepter", "Veigar's Talisman of Ascension", "Verdant Barrier", "Vigilant Wardstone", "Void Staff", "Voltaic Cyclosword", "Warden's Eye", "Warden's Mail", "Warmog's Armor", "Watchful Wardstone", "Winged Moonplate", "Winter's Approach", "Wit's End", "Wooglet's Witchcap", "Wordless Promise", "World Atlas", "Youmuu's Ghostblade", "Yun Tal Wildarrows", "Zaz'Zak's Realmspike", "Zeal", "Zeke's Convergence", "Zephyr", "Zhonya's Hourglass"]
+        // Champ search
         const popup = document.getElementById("popUpMenu")
         const searchbar = document.getElementById("searchbar")
-        const currentItems = document.getElementById("currItemList")
+        const champList = ['Aatrox', 'Ahri', 'Akali', 'Akshan', 'Alistar', 'Ambessa', 'Amumu', 'Anivia', 'Annie', 'Aphelios', 'Ashe', 'AurelionSol', 'Aurora', 'Azir', 'Bard', 'Belveth', 'Blitzcrank', 'Brand', 'Braum', 'Briar', 'Caitlyn', 'Camille', 'Cassiopeia', 'Chogath', 'Corki', 'Darius', 'Diana', 'Draven', 'DrMundo', 'Ekko', 'Elise', 'Evelynn', 'Ezreal', 'Fiddlesticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Gwen', 'Hecarim', 'Heimerdinger', 'Hwei', 'Illaoi', 'Irelia', 'Ivern', 'Janna', 'JarvanIV', 'Jax', 'Jayce', 'Jhin', 'Jinx', 'Kaisa', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kayn', 'Kennen', 'Khazix', 'Kindred', 'Kled', 'KogMaw', 'KSante', 'Leblanc', 'LeeSin', 'Leona', 'Lillia', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'MasterYi', 'Mel', 'Milio', 'MissFortune', 'MonkeyKing', 'Mordekaiser', 'Morgana', 'Naafiri', 'Nami', 'Nasus', 'Nautilus', 'Neeko', 'Nidalee', 'Nilah', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Quinn', 'Rakan', 'Rammus', 'RekSai', 'Rell', 'Renata', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Samira', 'Sejuani', 'Senna', 'Seraphine', 'Sett', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Smolder', 'Sona', 'Soraka', 'Swain', 'Sylas', 'Syndra', 'TahmKench', 'Taliyah', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'TwistedFate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', 'Velkoz', 'Vex', 'Vi', 'Viego', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Xayah', 'Xerath', 'XinZhao', 'Yasuo', 'Yone', 'Yorick', 'Yunara', 'Yuumi', 'Zaahen', 'Zac', 'Zed', 'Zeri', 'Ziggs', 'Zilean', 'Zoe', 'Zyra']
 
         searchbar.addEventListener("keyup", function(event){
-            searchBarUpdate(event,itemList,popup,onEnterItem,"S") // In searchBar.js pass the list of things we can search, and the popup menu
+            searchBarUpdate(event,champList,popup,onEnterChamp,"S") // In searchBar.js pass the list of things we can search, and the popup menu
         })
 
-        function onEnterItem(item){
-            currentItems.innerHTML += item + " "
+        function onEnterChamp(champ){
+            window.location.href = "/champ.html?bob=" + champ
         }
 
+
+        // Icons
+        function updateIcons(){
+            for (let i = 0; i < 4; i++){
+                let champ = myParam
+                document.getElementById(`Img${spellOrder[i]}`).style.backgroundImage = `url("dAssets/${champ}${spellOrder[i]}.png")`
+            }           
+        }
+        updateIcons()
 
     </script>
 </body>

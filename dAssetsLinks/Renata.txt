@@ -1,0 +1,1 @@
+{"0": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/RenataQ.png", "1": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/RenataW.png", "2": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/RenataE.png", "3": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/RenataR.png"}

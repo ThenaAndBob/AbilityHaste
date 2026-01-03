@@ -1,0 +1,1 @@
+{"0": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/MissFortuneRicochetShot.png", "1": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/MissFortuneViciousStrikes.png", "2": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/MissFortuneScattershot.png", "3": "https://ddragon.leagueoflegends.com/cdn/15.24.1/img/spell/MissFortuneBulletTime.png"}

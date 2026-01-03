@@ -54,10 +54,16 @@ app.get("/livegame", (req, res) => {
 
 })
 
+app.get('/dAssets/:any', (req, res) => {
+  const fileName = req.params.any; 
+  res.sendFile(`dAssets/${fileName}`, { root: __dirname });
+});
+
 app.get('/:any', (req, res) => {
   const fileName = req.params.any; 
   res.sendFile(fileName, { root: __dirname });
 });
+
 
 
 app.listen(port, () => {
