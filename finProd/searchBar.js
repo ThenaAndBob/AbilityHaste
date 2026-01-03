@@ -29,18 +29,22 @@ function searchBarUpdate(event, listOfChoices, popup, onSuccessEnter, searchType
     }
     else{
         let contents = new Set([])
-        for (let i = 0; i < listOfChoices.length; i++){
-            let champ = listOfChoices[i]
-            if (substringSearch(name.toLowerCase(), champ.toLowerCase())){
-                contents.add(champ)
+        if (searchType === "B" || searchType === "S"){
+            for (let i = 0; i < listOfChoices.length; i++){
+                let champ = listOfChoices[i]
+                if (substringSearch(name.toLowerCase(), champ.toLowerCase())){
+                    contents.add(champ)
+                }
             }
         }
-        
+
         // TODO: maybe get rid of this, could be slow.
-        for (let i = 0; i < listOfChoices.length; i++){
-            let champ = listOfChoices[i]
-            if (orderSearch(name.toLowerCase(), champ.toLowerCase()) && !(champ in contents)){
-                contents.add(champ)
+        if (searchType === "B" || searchType === "O"){
+            for (let i = 0; i < listOfChoices.length; i++){
+                let champ = listOfChoices[i]
+                if (orderSearch(name.toLowerCase(), champ.toLowerCase()) && !(champ in contents)){
+                    contents.add(champ)
+                }
             }
         }
         // Display popup menu for contents
