@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=League+Spartan:wght@592&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        @font-face {
+            font-family: myFont; /* set name */
+            src: url(sansation_light.woff); /* url of the font */
+        }
+
+        :root{
+            
+        }
+
+        body {
+            background-image: url("https://wallpapers.com/images/featured/league-of-legends-background-a1iu7ppvueyfvfdw.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: white;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+        }
+
+        .mainContainer{ /* The container for the entire thing */
+            position: relative;
+            background-color: transparent;
+            top: 10vh;
+            left: 30vw;
+            height: 70vh;
+            width: 40vw;
+
+            --abilityHasteHeight: 10%
+        }
+
+
+        .abilityHasteContainer{
+            height: var(--abilityHasteHeight);
+            display: flex;
+            flex-direction: row;
+            background-color: black;
+        }
+
+        .container{ /* Container for the spells and their cds. */
+            background-color: transparent;
+            height: calc(100% - var(--abilityHasteHeight));
+
+            box-sizing: border-box;
+            border-style: solid;
+            border-color: black;
+            border-width: 2px 0px 0px 0px;
+        }
+
+        .spell{ /* One row of spells (e.g. Q) */
+            font-size: 35px;
+            height: 25%;
+            display: flex;
+            flex-direction: row;
+
+            box-sizing: border-box;
+            border-style: solid;
+            border-color: white;
+            border-width: 0px 2px 2px 2px;
+        }
+
+        .abilityimage{
+            background-image: url("https://wiki.leagueoflegends.com/en-us/images/Zaahen_The_Darkin_Glaive.png?d12cf");
+            background-repeat: no-repeat;
+            background-size: cover;
+            position: relative;
+            height: 100%;
+            width: 30%;
+            text-align: right;
+        }
+
+        .abilityKey{
+            bottom: 5%;
+            right: 5%;
+            position: absolute;
+            color: white;
+            background-color: rgba(0,0,0,0.9);
+            padding-left: 5px;
+            padding-right: 5px;
+            padding-top: 5px;
+            border-radius: 5px;
+        }
+
+        .abilitycdsbox{ /* The box that has CD timers. */
+            background-color: black;
+            height: 100%;
+            width: 70%;
+            display: grid;
+            place-items: center;
+        }
+
+        .cdTEXT{
+            text-align: center;
+        }
+
+        .recharge{
+            display: inline-block;
+        }
+
+        .smalltext{
+            font-size: 15px;
+        }
+
+        .abilityHasteCounter{
+            height: 100%;
+            width: 60%;
+            text-align: center;
+
+            font: inherit;
+            font-size: min(5vw,5vh);
+
+            box-sizing: border-box;
+            border: 0px;
+            border-color: black;
+            border-style: solid;
+            border-width: 2px 0px 0px 2px;
+        }
+
+        .cdrBOX{ /* Box showing cdr% */
+            width: 10%;
+            height: 100%;
+            display: grid;
+            place-items: center;
+            background-color: white;
+            color: black;
+            box-sizing: border-box;
+            border-right: 2px solid black;
+            border-top: 2px solid black;
+            border-left: 2px solid black;
+        }
+
+        .incrementerContainer{
+            width: 15%;
+            height: 100%;
+            background-color: wheat;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .incrementer{
+            height: 50%;
+            border: 0px;
+
+            background-color: white;
+            border-right: 2px solid black;
+            border-top: 2px solid black;
+
+            font-size: min(1vw,1vh);
+            font: inherit;
+        }
+
+        .incrementer:hover{
+            background-color: green;
+            box-sizing: border-box;
+        }
+
+
+        .searchbar{
+            width: 100%;
+            height: 10%;
+            font-size: min(3vw,3vh);
+            text-align: center;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+            font: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="mainContainer">
+        
+        <div class="abilityHasteContainer">
+            <input type="search" placeholder="Ability Haste" id="amountAH" class="abilityHasteCounter">
+
+            <div class="cdrBOX" id="cdrBOX">0%</div>
+
+            <div class="incrementerContainer">
+                <button type="button" class="incrementer" id="+1">+1</button>
+                <button type="button" class="incrementer" id="-1">-1</button>
+            </div>
+
+            <div class="incrementerContainer">
+                <button type="button" class="incrementer" id="+5">+5</button>
+                <button type="button" class="incrementer" id="-5">-5</button>
+            </div>
+        </div>
+
+        <div class="itemSearch">
+            <input type="search" id="searchbar" class="searchbar" placeholder="Search">
+            <div id = popUpMenu>asd</div>
+            <div id="currItemList"></div>
+        </div>
+
+        <div class="container">
+            <div class="spell">
+                <div class="abilityimage"><div class="abilityKey">Q</div></div>
+                <div class="abilitycdsbox"><div id="Q" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage"><div class="abilityKey">W</div></div>
+                <div class="abilitycdsbox"><div id="W" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage"><div class="abilityKey">E</div></div>
+                <div class="abilitycdsbox"><div id="E" class="cdTEXT"></div></div>
+            </div>
+            <div class="spell">
+                <div class="abilityimage"><div class="abilityKey">R</div></div>
+                <div class="abilitycdsbox"><div id="R" class="cdTEXT"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="searchBar.js"></script>
+    <script>
+        const spellOrder = ["Q", "W", "E", "R"]
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const myParam = urlParams.get('bob');
+
+        var cds = [[[11.0, 10.0, 9.0, 8.0, 7.0, 7.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[17.0, 17.0, 17.0, 17.0, 17.0, 17.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 4.0, 4.0, 4.0, 4.0, 4.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]], [[4.0, 3.0, 2.0, 2.0, 2.0, 2.0], [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]]
+
+        fetch("Map.json").then(res => res.json()).then(map => {
+            fetch("cleanedC-CD.json").then(res => res.json()).then(data => {console.log(myParam); console.log(map); console.log(data); cds = data[map[myParam]]; updateHTML(cds)}) 
+        })
+        
+        function updateHTML(newCDS){
+            // update cds
+            for (let i = 0; i < 4; i++){
+                let re = /[|]/
+                let cds = document.getElementById(spellOrder[i])
+                cds.innerHTML = formatHTML(newCDS[i][0], newCDS[i][1], "") // TODO: ADD NOTES
+            }
+
+            // update the cdr box
+            updateCDR()
+        }
+
+        function formatHTML(cds, recharge, notes){
+            let c = JSON.stringify(cds).replaceAll(",", " / ").replaceAll(/\[|\]/g, "")
+            let re = ""
+            let n = ""
+
+            if (!allZeros(recharge)){
+                c = "<span class='recharge'><span class='smalltext'>CD:&nbsp&nbsp</span>" + c + "</span>"
+                re = "<span class='recharge'><span class='smalltext'>RECHARGE:&nbsp&nbsp</span>" + JSON.stringify(recharge).replaceAll(",", " / ").replaceAll(/\[|\]/g, "") + "</span>"
+            }
+            console.log(allZeros(recharge, [0,0,0,0]))
+            if (notes !== ""){
+                n = "<br>" + notes
+            }
+            
+            return c + re + n
+        }
+
+        function allZeros(a){
+            zeros = true
+            a.forEach(element => {
+                zeros &= element === 0
+            });
+            return zeros
+        }
+
+        
+        // ALL the ability haste stuff
+        const amountAH = document.getElementById("amountAH")
+        amountAH.addEventListener("keyup", function(){
+            cdsUpdate()
+        })
+
+        function cdsUpdate(){
+            console.log("updating")
+            updateHTML(applyCDR(cds))
+        }
+
+        function parseOrConvert(text){
+            let AH = parseInt(text)
+            if (isNaN(AH)){AH = 0}
+            return AH
+        }
+
+        function getCDReductionRatio(){ // Always returns int
+            let AH = parseOrConvert(amountAH.value)
+            return 100 / (100 + AH)
+        }
+
+        function applyCDR(cds){ // [[[q],[q]],[[w],[w]],[[e],[e]],[[r],[r]]] each of q,w,e,r are lists
+            let cdr = getCDReductionRatio()
+            let cdsCopy = structuredClone(cds)
+            cdsCopy.forEach(lofl => {
+                lofl.forEach(l => {
+                    l.forEach((cd, index) => {console.log(cdr); l[index] = roundTo(cd*cdr,1)})
+                })
+            })
+            console.log(cdsCopy)
+            return cdsCopy
+        }
+
+        function roundTo(num, decimalPoints){
+            let factor = (10 ** decimalPoints)
+            return Math.round((num + Number.EPSILON) * factor) / factor
+        }
+
+
+        // Ability Haste Buttons
+        const buttonIds = ["+1","-1","+5","-5"]
+        buttonIds.forEach(id => {
+            document.getElementById(id).onclick = function(){
+                console.log(event.target.id)
+                amountAH.value = parseOrConvert(amountAH.value) + parseInt(event.target.id)
+                cdsUpdate()
+            }
+        })
+
+
+        // CDR box
+        const cdrBOX = document.getElementById("cdrBOX")
+        function updateCDR(){
+            parseOrConvert
+            cdr = Math.round(100 * roundTo(1 - getCDReductionRatio(),2)) // cdr = 1 - this INT
+            cdrBOX.innerHTML = cdr
+            cdrBOX.innerHTML += "%"
+        }
+
+
+        // Items
+        const itemList = ["Your Cut", "Abyssal Mask", "Aegis of the Legion", "Aether Wisp", "Amplifying Tome", "Anathema's Chains", "Anti-Tower Socks", "Anvil Voucher", "Arcane Sweeper (Trinket)", "Archangel's Staff", "Ardent Censer", "Armored Advance", "Atma's Reckoning", "Axiom Arc", "B. F. Sword", "Bami's Cinder", "Bandleglass Mirror", "Banshee's Veil", "Base Turret Reinforced Armor (Turret Item)", "Berserker's Greaves", "Black Cleaver", "Black Hole Gauntlet", "Black Spear", "Blackfire Torch", "Blade of the Ruined King", "Blasting Wand", "Blighting Jewel", "Bloodletter's Curse", "Bloodsong", "Bloodthirster", "Boots", "Boots of Swiftness", "Bounty of Worlds", "Bramble Vest", "Bravery Voucher", "Cappa Juice", "Catalyst of Aeons", "Caulfield's Warhammer", "Celestial Opposition", "Chain Vest", "Chainlaced Crushers", "Chempunk Chainsword", "Cloak of Agility", "Cloak of Starry Night", "Cloth Armor", "Control Ward", "Cosmic Drive", "Crimson Lucidity", "Crown of the Shattered Queen", "Cruelty", "Cryptbloom", "Crystalline Bracer", "Cull", "Dagger", "Dark Seal", "Darksteel Talons", "Dawncore", "Dead Man's Plate", "Death's Dance", "Death's Daughter", "Decapitator", "Demonic Embrace", "Demon King's Crown", "Detonation Orb", "Doran's Blade", "Doran's Ring", "Doran's Shield", "Diamond-Tipped Spear", "Divine Sunderer", "Dragonheart", "Dream Maker", "Duskblade of Draktharr", "Echoes of Helia", "Eclipse", "Edge of Night", "Eleisa's Miracle", "Elixir of Avarice", "Elixir of Force", "Elixir of Iron", "Elixir of Skill", "Elixir of Sorcery", "Elixir of Wrath", "Empyrean Promise", "Enhanced Lucky Dice", "Essence Reaver", "Everfrost", "Executioner's Calling", "Experimental Hexplate", "Eye of the Herald", "Faerie Charm", "Farsight Alteration", "Fated Ashes", "Fiendish Codex", "Fimbulwinter", "Fire at Will", "Flesheater", "Force of Entropy", "Forbidden Idol", "Force of Nature", "Forever Forward", "Frozen Heart", "Fulmination", "Galeforce", "Gambler's Blade", "Gargoyle Stoneplate", "Ghostcrawlers", "Giant's Belt", "Glacial Buckler", "Glowing Mote", "Gold Stat Anvil Voucher", "Goredrinker", "Guardian Angel", "Guardian's Amulet", "Guardian's Blade", "Guardian's Dirk", "Guardian's Hammer", "Guardian's Horn", "Guardian's Orb", "Guardian's Shroud", "Guinsoo's Rageblade", "Gunmetal Greaves", "Gusto", "Gustwalker Hatchling", "Hamstringer", "Haunting Guise", "Health Potion", "Hearthbound Axe", "Heartsteel", "Hellfire Hatchet", "Hemomancer's Helm", "Hexbolt Companion", "Hexdrinker", "Hextech Alternator", "Hextech Gunblade", "Hextech Rocketbelt", "Hollow Radiance", "Horizon Focus", "Hubris", "Hullbreaker", "Iceborn Gauntlet", "Immortal Shieldbow", "Innervating Locket", "Imperial Mandate", "Infinity Edge", "Ionian Boots of Lucidity", "Jak'Sho, The Protean", "Jarvan I's", "Juice of Haste", "Juice of Power", "Juice of Vitality", "Kaenic Rookern", "Kindlegem", "Kinkou Jitte", "Knight's Vow", "Kraken Slayer", "Lane Swap Detector", "Last Whisper", "Liandry's Torment", "Lifeline", "Lightning Rod", "Legendary Assassin Item", "Legendary Fighter Item", "Legendary Mage Item", "Legendary Marksman Item", "Legendary Support Item", "Legendary Tank Item", "Lich Bane", "Locket of the Iron Solari", "Long Sword", "Lord Dominik's Regards", "Lost Chapter", "Lucky Dice", "Luden's Companion", "Malignance", "Manamune", "Maw of Malmortius", "Mejai's Soulstealer", "Mercurial Scimitar", "Mercury's Treads", "Mikael's Blessing", "Mirage Blade", "Moonflair Spellblade", "Moonstone Renewer", "Morellonomicon", "Mosstomper Seedling", "Mortal Reminder", "Muramana", "Nashor's Tooth", "Navori Flickerblade", "Needlessly Large Rod", "Negatron Cloak", "Night Harvester", "Noonquiver", "Null-Magic Mantle", "Oblivion Orb", "Ohmwrecker (Turret Item)", "Opportunity", "Oracle Lens", "Overcharged", "Overlord's Bloodmail", "Perplexity", "Phage", "Phantom Dancer", "Phreakish Gusto", "Pickaxe", "Plated Steelcaps", "Poro-Snax", "Prismatic Item", "Prismatic Stat Voucher", "Profane Hydra", "Prowler's Claw", "Puppeteer", "Pyromancer's Cloak", "Quicksilver Sash", "Rabadon's Deathcap", "Radiant Virtue", "Raise Morale", "Randuin's Omen", "Rapid Firecannon", "Ravenous Hydra", "Reality Fracture", "Reaper's Toll", "Rectrix", "Recurve Bow", "Redemption", "Refillable Potion", "Regicide", "Reinforced Armor (Turret Item)", "Rejuvenation Bead", "Reverberation", "Riftmaker", "Rite of Ruin", "Rod of Ages", "Ruby Crystal", "Runaan's Hurricane", "Runecarver", "Runic Compass", "Rylai's Crystal Scepter", "Sanguine Gift", "Sapphire Crystal", "Scarecrow Effigy", "Scorchclaw Pup", "Scout's Slingshot", "Scouting Ahead", "Seeker's Armguard", "Seraph's Embrace", "Serpent's Fang", "Serrated Dirk", "Serylda's Grudge", "Shadowflame", "Shattered Armguard", "Sheen", "Shield of Molten Stone", "Shurelya's Battlesong", "Slightly Magical Boots", "Solstice Sleigh", "Sorcerer's Shoes", "Spear of Shojin", "Spectral Cutlass", "Spectre's Cowl", "Spellslinger's Shoes", "Spirit Visage", "Staff of Flowing Water", "Stat Bonus", "Statikk Shiv", "Stealth Ward", "Steel Sigil", "Sterak's Gage", "Stormrazor", "Stormsurge", "Stridebreaker", "Sundered Sky", "Sunfire Aegis", "Super Mech Armor", "Super Mech Power Field", "Swiftmarch", "Sword of Blossoming Dawn", "Sword of the Divine", "Symbiotic Soles", "Synchronized Souls", "Talisman of Ascension", "Tear of the Goddess", "Terminus", "The Brutalizer", "The Collector", "The Golden Spatula", "Thornmail", "Tiamat", "Titanic Hydra", "Total Biscuit of Everlasting Will", "Trailblazer", "Trinity Force", "Tunneler", "Turbo Chemtank", "Turret Plating", "Twilight's Edge", "Twin Mask", "Umbral Glaive", "Unending Despair", "Vampiric Scepter", "Veigar's Talisman of Ascension", "Verdant Barrier", "Vigilant Wardstone", "Void Staff", "Voltaic Cyclosword", "Warden's Eye", "Warden's Mail", "Warmog's Armor", "Watchful Wardstone", "Winged Moonplate", "Winter's Approach", "Wit's End", "Wooglet's Witchcap", "Wordless Promise", "World Atlas", "Youmuu's Ghostblade", "Yun Tal Wildarrows", "Zaz'Zak's Realmspike", "Zeal", "Zeke's Convergence", "Zephyr", "Zhonya's Hourglass"]
+        const popup = document.getElementById("popUpMenu")
+        const searchbar = document.getElementById("searchbar")
+        const currentItems = document.getElementById("currItemList")
+
+        searchbar.addEventListener("keyup", function(event){
+            searchBarUpdate(event,itemList,popup,onEnterItem,"S") // In searchBar.js pass the list of things we can search, and the popup menu
+        })
+
+        function onEnterItem(item){
+            currentItems.innerHTML += item + " "
+        }
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=League+Spartan:wght@592&display=swap" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        @font-face {
+            font-family: myFont; /* set name */
+            src: url(sansation_light.woff); /* url of the font */
+        }
+
+        body {
+            background-image: url("https://wallpapers.com/images/featured/league-of-legends-background-a1iu7ppvueyfvfdw.jpg");
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+            color: white;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+        }
+
+        .container{
+            position: relative;
+            background-color: transparent;
+            top: 15vh;
+            left: 30vw;
+            height: 70vh;
+            width: 40vw;
+            border: 2px solid black;
+        }
+
+        .searchbar{
+            width: 100%;
+            height: 30%;
+            font-size: min(10vw,10vh);
+            text-align: center;
+            font-family: "League Spartan", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 592;
+            font-style: normal;
+            font: bold;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <input type="search" id="searchbar" class="searchbar" placeholder="Search">
+
+        <div id = popUpMenu>asd</div>
+    </div>
+
+    <script src="searchBar.js"></script>
+    <script>
+
+        const champList = ['Aatrox', 'Ahri', 'Akali', 'Akshan', 'Alistar', 'Ambessa', 'Amumu', 'Anivia', 'Annie', 'Aphelios', 'Ashe', 'AurelionSol', 'Aurora', 'Azir', 'Bard', 'Belveth', 'Blitzcrank', 'Brand', 'Braum', 'Briar', 'Caitlyn', 'Camille', 'Cassiopeia', 'Chogath', 'Corki', 'Darius', 'Diana', 'Draven', 'DrMundo', 'Ekko', 'Elise', 'Evelynn', 'Ezreal', 'Fiddlesticks', 'Fiora', 'Fizz', 'Galio', 'Gangplank', 'Garen', 'Gnar', 'Gragas', 'Graves', 'Gwen', 'Hecarim', 'Heimerdinger', 'Hwei', 'Illaoi', 'Irelia', 'Ivern', 'Janna', 'JarvanIV', 'Jax', 'Jayce', 'Jhin', 'Jinx', 'Kaisa', 'Kalista', 'Karma', 'Karthus', 'Kassadin', 'Katarina', 'Kayle', 'Kayn', 'Kennen', 'Khazix', 'Kindred', 'Kled', 'KogMaw', 'KSante', 'Leblanc', 'LeeSin', 'Leona', 'Lillia', 'Lissandra', 'Lucian', 'Lulu', 'Lux', 'Malphite', 'Malzahar', 'Maokai', 'MasterYi', 'Mel', 'Milio', 'MissFortune', 'MonkeyKing', 'Mordekaiser', 'Morgana', 'Naafiri', 'Nami', 'Nasus', 'Nautilus', 'Neeko', 'Nidalee', 'Nilah', 'Nocturne', 'Nunu', 'Olaf', 'Orianna', 'Ornn', 'Pantheon', 'Poppy', 'Pyke', 'Qiyana', 'Quinn', 'Rakan', 'Rammus', 'RekSai', 'Rell', 'Renata', 'Renekton', 'Rengar', 'Riven', 'Rumble', 'Ryze', 'Samira', 'Sejuani', 'Senna', 'Seraphine', 'Sett', 'Shaco', 'Shen', 'Shyvana', 'Singed', 'Sion', 'Sivir', 'Skarner', 'Smolder', 'Sona', 'Soraka', 'Swain', 'Sylas', 'Syndra', 'TahmKench', 'Taliyah', 'Talon', 'Taric', 'Teemo', 'Thresh', 'Tristana', 'Trundle', 'Tryndamere', 'TwistedFate', 'Twitch', 'Udyr', 'Urgot', 'Varus', 'Vayne', 'Veigar', 'Velkoz', 'Vex', 'Vi', 'Viego', 'Viktor', 'Vladimir', 'Volibear', 'Warwick', 'Xayah', 'Xerath', 'XinZhao', 'Yasuo', 'Yone', 'Yorick', 'Yunara', 'Yuumi', 'Zaahen', 'Zac', 'Zed', 'Zeri', 'Ziggs', 'Zilean', 'Zoe', 'Zyra']
+        const popup = document.getElementById("popUpMenu")
+        const searchbar = document.getElementById("searchbar")
+
+        function changeUrl(champ){
+            window.location.href = "/champ.html?bob=" + champ
+        }
+
+        searchbar.addEventListener("keyup", function(event){
+            searchBarUpdate(event,champList,popup, changeUrl) // In searchBar.js pass the list of things we can search, and the popup menu
+        })
+
+    </script>
+</body>
+
+</html>
