@@ -338,3 +338,5 @@ bob = getData("15.24.1","D",download=False)
 # Create a UPDATE_ONE_CD(champ) so that if you know all the champs that have been changed, you can limit the number of API calls.
 # UPDATE_ONE_CHAMPION_ICON(champ) for VSUs
 # A function FIX_CDS to fix certain issues with champs (e.g. veigar)
+
+# I hate everything about the different APIs
