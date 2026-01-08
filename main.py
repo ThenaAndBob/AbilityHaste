@@ -1,6 +1,5 @@
 import requests
 import json
-import os
 
 class getData:
     SPELLORDER = ["Q", "W", "E", "R"]
@@ -89,14 +88,6 @@ class getData:
             champions.append(champion)
         
         return champions
-    
-    def getChampsList(self): # TO BE CALLED ONCE PER PATCH. Returns list of strings
-        if self.__apiType == "C": 
-            return self.__getChampsListC()
-        else:
-            return self.__getChampsListD()
-
-
 
     def __getChampCooldownsC(self, champion): # given champ id returns cooldowns and ammorechargetime
         cooldowns = [[[],[]] for _ in range(4)] # Array[Array[X]]  list of 4 lists of size 1-6
@@ -123,7 +114,11 @@ class getData:
         else:
             return self.__getChampCooldownsD(champ)
 
-
+    def getChampsList(self): # TO BE CALLED ONCE PER PATCH. Returns list of strings
+        if self.__apiType == "C": 
+            return self.__getChampsListC()
+        else:
+            return self.__getChampsListD()
 
     def getAllCDsList(self): # once per patch
         cds = []
@@ -240,11 +235,25 @@ class getData:
     def notesC(self):
         pass
 
-    def __localDownload(self, download):
+    def __localDownload(self, download): 
+        
+        # Purpose:
+        # I want some functions to be allowed to download despite the object self.__download flag. 
+        # This parses the download parameter that should be passed to those functions.
+        
+        # Use:
+        # download : String 
+        # if download.lower() == "default" (base case), give object flag
+        # else convert y/n to true/false respectively.
+
+        download = download.lower()
         if download == "default":
             localDownloadCheck = self.__download
-        elif download.lower() == "y":
-            localDownloadCheck = True
+        elif download == "y":
+            if input("Are you sure you want to download, Y/N").lower() == "y":
+                localDownloadCheck = True
+            else: 
+                localDownloadCheck = False
         else:
             localDownloadCheck = False
         
@@ -258,25 +267,6 @@ class getData:
         else:
             if self.__apiType == "C":
                 raise NotImplementedError
-                # https://raw.communitydragon.org/{version}/game/assets/characters/{champ.lower()}/hud/icons2d/
-                champids = self.getChampsList()
-                mapping = self.getIdNameMapping()
-                
-                for id in champids:
-                    id = str(id)
-                    with open("cdragon/id", "rb") as f:
-                        champJSON = json.load(f)
-
-
-                    for spell in champJSON["spells"]:
-                        pass
-
-                    with open(f"cAssets/{id}", "w") as f:
-                        toWrite = ""
-                        for asset in data:
-                            toWrite += imgUrlBase + asset["name"] + "\n"
-                        toWrite = toWrite[:-1]
-                        f.write(toWrite)
             else:
                 imgBase = f"https://ddragon.leagueoflegends.com/cdn/{self.__patch}/img/spell/"
                 champNames = self.getChampsList()
@@ -311,49 +301,40 @@ class getData:
             else: 
                 raise NotImplementedError
 
+    def printChampionNames(self):
+        if (self.__download):
+            raise NotImplementedError
+        else:
+            with open("C:\Code\AbilityHaste\D-CD.json", "rb") as f:
+                print(json.load(f).keys())
+
 # END OF CLASS
 
-def printChampions():
-    with open("C:\Code\AbilityHaste\D-CD.json", "rb") as f:
-        print(json.load(f).keys())
+"""
+DOCS
+getChampCooldowns(champ) -- CDS of a champ Multidimensional array of strings/ints idk
 
-# ELISE, JAYCE, KARMA, NIDALEE, YUUMI
-# Not needed if we just trust D.
-def classify(): # I dont like this
-    with open("C:\Code\AbilityHaste\D-CD.json", "rb") as f:
-        champs = list(json.load(f).keys())
-        classify = [[] for _ in range(len(champs))]
-        i = 0
-        while (True):
-            try:
-                abilities = input(champs[i])
-                if (abilities == ""):
-                    classify[i] = [5,5,5,3]
-                elif (abilities == "b"):
-                    i -= 2
-                else:
-                    classify[i] = list(map(lambda x: int(x), [abilities[0], abilities[1], abilities[2], abilities[3]]))
-            except:
-                input("BAD!")
-                print(classify)
-                break
-            
-            i += 1
-            if i >= len(champs) and abilities == "quit":
-                break
-    
-    with open("C:\Code\AbilityHaste\numSkillPointsAlpha.txt", "w") as f:
-        f.write(str(abilities))
+getChampsList() -- List of champs as strings (name) or ints ? (ids)
 
-    print(abilities)
-    return abilities
+getAllCDs___() -- Dict or List for every champ
 
+getIdNameMapping() -- Map between ids and names
 
+getIconURLs() -- get all urls for the icons
+
+getIconPNGs() -- get all pngs for the icons
+"""
 
 # READTHIS:
 # the reason i wanted to use cdragon is because it also has recharge times.
 # i couldnt find them in ddragon. skill issue maybe.
 
 bob = getData("15.24.1","D",download=False)
-bob.getIconURLs(download="y")
-bob.getIconPNGs(download="y")
+
+# TODO: 
+# Clean this up a bit. Add some documentation ?
+
+# Create an UPDATE_ALL_CDS, which should be run once per patch.
+# Create a UPDATE_ONE_CD(champ) so that if you know all the champs that have been changed, you can limit the number of API calls.
+# UPDATE_ONE_CHAMPION_ICON(champ) for VSUs
+# A function FIX_CDS to fix certain issues with champs (e.g. veigar)
